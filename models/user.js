@@ -1,11 +1,10 @@
 var mongoose = require('mongoose');
 
 var userSchema = mongoose.Schema({
-    id: Number,
     namefirst: String,
     nameLast: String,
-    slug: String,
     role: Number,
+    password: String,
     email: String,
     phone: String,
     street1: String,
@@ -26,6 +25,4 @@ userSchema.methods.getRole = function(){
     return this.role;
 };
 
-var User = mongoose.model('User', userSchema);
-
-module.exports = User;
+module.exports = mongoose.model('User', userSchema);
