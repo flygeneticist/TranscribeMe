@@ -20,6 +20,4 @@ noteSchema.methods.getContents = function(){
     return this.contents;
 };
 
-var Note = mongoose.model('Note', noteSchema);
-
-module.exports = Note;
+module.exports = mongoose.model('Note', noteSchema);
