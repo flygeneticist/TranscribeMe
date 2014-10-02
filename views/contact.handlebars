@@ -2,10 +2,21 @@
 <p>
     Want to praise us, found an issue, or anything else really?<br/>Use the form below to get in touch!
 </p>
-<form>
-    <input type="hidden" name="referrer">
-    Name: <input type="text" id="fieldName" name="name"><br>
-    Email: <input type="email" name="email"><br>
-    Message: <input type="text" name="message"><br>
-    <input type="submit" value="Submit" name="submit">
+<form action="/contact" method="post">
+    <input type="hidden">
+    <div>
+        <label>Name:</label>
+        <input type="text" id="fieldName" name="name" required>
+    </div>
+    <div>
+        <label>Email:</label>
+        <input type="email" name="email" required>
+    </div>
+    <div>
+        <label>Message:</label>
+        <input type="text" name="message" required>
+    </div>
+    <div>
+        <input type="submit" value="Submit" name="submit"/>
+    </div>
 </form>

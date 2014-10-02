@@ -13,14 +13,13 @@ var userSchema = mongoose.Schema({
     city: String,
     state: String,
     zip: Number,
-    notes: [Note],
     date_created: Date,
     date_updated: Date,
     active: Boolean,
 });
 
 userSchema.methods.getNotes = function(){
-    return this.notes;
+    return this.notes; // select statement for all notes that have use in it
 };
 
 userSchema.methods.getRole = function(){

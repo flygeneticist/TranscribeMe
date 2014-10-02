@@ -8,7 +8,7 @@
 
         <title>TranscribeMe</title>
         <link rel="stylesheet" href="styles/main.css">
-        <script src="//code.jquery.com/jquery-2.0.2.min.js"></script>
+        <script src="bower_components/jquery/jquery.js"></script>
 
         {{#if showTests}}
             <link rel="stylesheet" href="/vendor/mocha.css">
@@ -28,8 +28,7 @@
                 <div class="userStatus">
                     <script>
                         var p = document.createElement("p");
-                        var loggedIn = Math.random();
-                        if (loggedIn > 0.5) {
+                        if (true) {
                             p.appendChild(document.createTextNode("Welcome" + loggedIn + "!"));
                             //<a href='/logout'>Logout</a>
                         } else {
@@ -69,17 +68,5 @@
             <script>mocha.run();</script>
         {{/if}}
 
-        <!-- build:js(assets) scripts/scripts.js -->
-        <script src="bower_components/jquery/jquery.js"></script>
-        
-        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-        <script>
-            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-            e.src='//www.google-analytics.com/analytics.js';
-            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-            ga('create','UA-XXXXX-X');ga('send','pageview');
-        </script>
     </body>
 </html>

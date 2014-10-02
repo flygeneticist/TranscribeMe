@@ -4,7 +4,7 @@
  * Express Dependencies
  */
 var express = require('express');
-var app = express();
+var app = express();    
 var port = 3000;
 
 // Using Handlebars for templating
@@ -15,17 +15,33 @@ var hbs;
 app.use(express.compress());
 
 
-/*
- * Custom modules from the lib folder
- */
+// Custom modules from the lib folder
 var credentials = require('./lib/credentials.js');
 
 
-/*
- *   Pull in required database models
- */
+// Pull in required database models
 var User = require('./models/user.js');
 var Note = require('./models/note.js');
+
+
+// authentication package
+var passport = require('passport');
+var localStrategy = require('passport-local').Strategy;
+
+passport.use(new localStrategy(
+  function(username, password, done) {
+    User.findOne({ username: username }, function(err, user) {
+      if (err) { return done(err); }
+      if (!user) {
+        return done(null, false, { message: 'Incorrect username.' });
+      }
+      if (!user.validPassword(password)) {
+        return done(null, false, { message: 'Incorrect password.' });
+      }
+      return done(null, user);
+    });
+  }
+));
 
 
 /*
@@ -75,7 +91,7 @@ app.use(function(req, res, next){
 
 
 /*
- * Routes
+ * GET Routes
  */
 // Index Page
 app.get('/', function(req, res, next) {
@@ -105,9 +121,26 @@ app.get('/notes', function(req, res, next) {
         pageTestScript: '/qa/notes-tests.js'
     });
 });
-// process and log a contact form submission
-app.post('/process-contact', function(req, res){
-    // SOMETHING goes here ?? 
+// Login Page
+app.get('/login', function(req, res, next) {
+    res.render('login', {
+        pageTestScript: '/qa/login-tests.js'
+    });
+});
+
+/*
+ * POST Routes
+ */
+// process login request
+app.post('/login',
+    passport.authenticate('local', {    successRedirect: '/',
+                                        failureRedirect: '/login',
+                                        failureFlash: true })
+);
+// process contact form submission
+app.post('/contact', function(req, res){
+    // post form info to the db / email admin
+    res.render('index');
 });
 
 
@@ -126,3 +159,4 @@ app.use(function(req, res, next){
 // Start up the server / logging errors to output
 app.listen(process.env.PORT || port);
 console.log('Express started on port ' + port);
+console.log('http://localhost:'+port);

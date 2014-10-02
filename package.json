@@ -4,8 +4,9 @@
   "private": true,
   "dependencies": {
     "express": "~3.4.0",
-    "express3-handlebars": "0.4.x",
-    "mongoose": "^3.8.17"
+    "express-handlebars": "0.4.x",
+    "mongoose": "^3.8.17",
+    "passport": "^0.2.1"
   },
   "devDependencies": {
     "chai": "^1.9.1",
@@ -29,7 +30,6 @@
     "grunt-usemin": "~0.1.10",
     "load-grunt-tasks": "~0.1.0",
     "mocha": "^1.21.4",
-    "selenium-webdriver": "^2.43.5",
     "time-grunt": "~0.1.1"
   },
   "engines": {
