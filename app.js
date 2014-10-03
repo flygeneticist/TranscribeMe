@@ -90,11 +90,7 @@ app.use(function (req, res, next) {
     res.locals.showTests = app.get('env') !== 'production' && req.query.test === '1';
     next();
 });
-// logging all requests to server
-app.use(function (req, res, next) {
-    console.log('Something is happening.');
-    next();
-});
+
 
 /*
  * GET Routes
