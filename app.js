@@ -176,7 +176,8 @@ app.get('/schedule', function (req, res, next) {
 // Notes Page
 app.get('/notes', function (req, res, next) {
     res.render('notes', {
-        pageTestScript: '/qa/notes-tests.js'
+        pageTestScript  : '/qa/notes-tests.js',
+        userNotes       : ''
     });
 });
 // Login Page

@@ -21,7 +21,10 @@
             <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
                 <div class="container">
                     <ul class="nav navbar-nav navbar-left">
-                        <li><a name="logo" href="/" class="brand" alt="TranscribeMe">PROJECT NAME</a></li>
+                        <li><a id="logo" href="/" class="brand" alt="TranscribeMe">
+                                <img id="logo" alt="TranscribeMe" src="images/">
+                            </a>
+                        </li>
                         <li><a href="/">Home</a></li>
                         <li><a href="/notes">Notes</a></li>
                         <li><a href="/schedule">Schedule</a></li>
@@ -33,18 +36,18 @@
                         <li>
                         {{#if user}}
                             <p class="navbar-text">
-                            <strong>Hi,</strong> 
-                            <img src="{{user.avatar}}" width="20" height="20"> 
-                            {{user.username}}
+                                <strong>Hi,</strong> 
+                                <img src="{{user.avatar}}" width="20" height="20"> 
+                                {{user.username}}
                             </p>
                             </li>
                             </ul>
                             <ul class="nav navbar-nav navbar-right">
                             <li>
-                            <a href="/logout">Log Out</a>
+                                <a href="/logout">Log Out</a>
                             </li>
                         {{else}}
-                            <a href="/login">Sign In</a>
+                                <h4><a href="/login">Sign In</a></h4>
                             </li>
                         {{/if}}
                     </ul>
@@ -52,11 +55,9 @@
             </nav>
         </header>
 
-        <content>
-            <div class="container-fluid">
-                {{{ body }}}
-            </div>
-        </content>
+        <div class="container-fluid">
+            {{{ body }}}
+        </div>
         
         <footer>
             <div class="container">
