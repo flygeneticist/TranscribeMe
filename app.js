@@ -9,7 +9,7 @@ var port = 3000;
 
 // mongodb setup and models imported
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/TranscribeMe/');
+mongoose.connect('mongodb://localhost/test/');
 var User = require('./models/user.js');
 var Note = require('./models/note.js');
 var Message = require('./models/message.js');
