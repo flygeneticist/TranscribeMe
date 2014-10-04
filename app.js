@@ -18,7 +18,7 @@ var Message = require('./models/message.js');
 var exphbs = require('express3-handlebars');
 var hbs;
 
-// configure app to use bodyParser() which will this will let us get the data from a POST
+// setup bodyParser which will this will let us get the data from a POST
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -28,7 +28,10 @@ app.use(express.compress());
 
 // authentication package
 var passport = require('passport');
-var localStrategy = require('passport-local').Strategy;
+var localStrategy = require('passport-local');
+var twitterStrategy = require('passport-twitter');
+var goolgeStrategy = require('passport-google');
+var facebookStrategy = require('passport-facebook');
 
 passport.use(new localStrategy(
   function (username, password, done) {

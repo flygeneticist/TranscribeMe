@@ -7,7 +7,14 @@
     "express3-handlebars": "0.4.x",
     "mongoose": "^3.8.17",
     "passport": "^0.2.1",
-    "body-parser": "^1.0.1"
+    "bcryptjs": "^0.7.12",
+    "orchestrate": "^0.1.2",
+    "passport-facebook": "^1.0.3",
+    "passport-google": "^0.3.0",
+    "passport-local": "^1.0.0",
+    "passport-twitter": "^1.0.2",
+    "body-parser": "^1.0.1",
+    "q": "^1.0.1"
   },
   "devDependencies": {
     "chai": "^1.9.1",
