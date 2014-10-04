@@ -9,7 +9,8 @@ var port = 3000;
 
 // mongodb setup and models imported
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/test/');
+var config = require('./lib/config.js');
+mongoose.connect(config.db);
 var User = require('./models/user.js');
 var Note = require('./models/note.js');
 var Message = require('./models/message.js');
