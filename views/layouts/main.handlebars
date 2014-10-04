@@ -6,36 +6,47 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
         <title>TranscribeMe</title>
-        <link rel="stylesheet" href="styles/main.css">
-        <script src="bower_components/jquery/jquery.js"></script>
+        <link rel="stylesheet" type="text/css" href="styles/main.css">
+        <link rel="stylesheet" type="text/css" href="styles/bootstrap-social.css">
+        <link rel="stylesheet" type="text/css" href="styles/bootstrap.css">
+        <link rel="stylesheet" type="text/css" href="styles/docs.css">
+        <link rel="stylesheet" type="text/css" href="styles/font-awesome.css">
 
         {{#if showTests}}
-            <link rel="stylesheet" href="/vendor/mocha.css">
+            <link rel="stylesheet" type="text/css" href="/vendor/mocha.css">
         {{/if}}
     </head>
     <body>
         <header>
-            <div class="inner_content">
-                <a name="logo" href="/" class="brand" alt="TranscribeMe"></a>
-                <nav id="navBar">
-                    <span><a href="/">Home</a></li></span>
-                    <span><a href="/notes">Notes</a></li></span>
-                    <span><a href="/schedule">Schedule</a></li></span>
-                    <span><a href="/about">About</a></li></span>
-                    <span><a href="/contact">Contact</a></li></span>
-                </nav>
-                <div class="userStatus">
-                    <script>
-                        var p = document.createElement("p");
-                        if (true) {
-                            p.appendChild(document.createTextNode("Welcome" + 'USERNAME' + "!"));
-                            //<a href='/logout'>Logout</a>
-                        } else {
-                            p.appendChild(document.createTextNode("Please login!"));
-                            //<a href='/login'>Login</a>
-                        }
-                    </script>
-                </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <a name="logo" href="/" class="brand" alt="TranscribeMe">SITE'S LOGO GOES HERE</a>
+                <ul class="nav navbar-nav navbar-left">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/notes">Notes</a></li>
+                    <li><a href="/schedule">Schedule</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                    {{#if user}}
+                        <p class="navbar-text">
+                        <strong>Hi,</strong> 
+                        <img src="{{user.avatar}}" width="20" height="20"> 
+                        {{user.username}}
+                        </p>
+                        </li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                        <li>
+                        <a href="/logout">Log Out</a>
+                        </li>
+                    {{else}}
+                        <a href="/login">Sign In</a>
+                        </li>
+                    {{/if}}
+                </ul>
             </div>
         </header>
 
@@ -50,6 +61,12 @@
                 TranscribeMe - Copyright 2014 - Kevin Keller
             </div>
         </footer>
+
+        <!-- Bootstrap core JavaScript -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 
         <!-- Run the test scripts if triggered -->
         {{#if showTests}}

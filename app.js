@@ -9,7 +9,8 @@ var port = 3000;
 
 // mongodb setup and models imported
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/test/');
+var config = require('./lib/config.js');
+mongoose.connect(config.db);
 var User = require('./models/user.js');
 var Note = require('./models/note.js');
 var Message = require('./models/message.js');
@@ -18,7 +19,7 @@ var Message = require('./models/message.js');
 var exphbs = require('express3-handlebars');
 var hbs;
 
-// configure app to use bodyParser() which will this will let us get the data from a POST
+// setup bodyParser which will this will let us get the data from a POST
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -26,21 +27,68 @@ app.use(bodyParser.json());
 // For gzip compression
 app.use(express.compress());
 
-// authentication package
-var passport = require('passport');
-var localStrategy = require('passport-local').Strategy;
 
-passport.use(new localStrategy(
-  function (username, password, done) {
-    User.findOne({ username: username }, function (err, user) {
-      if (err) { return done(err); }
+//===============PASSPORT=================
+// pulling in required packages and modules
+var passport = require('passport');
+var localStrategy = require('passport-local');
+var twitterStrategy = require('passport-twitter');
+var goolgeStrategy = require('passport-google');
+var facebookStrategy = require('passport-facebook');
+
+// Setup serialization of users to only use part of the object
+passport.serializeUser(function(user, done) {
+  console.log("serializing " + user.username);
+  done(null, user);
+});
+
+passport.deserializeUser(function(obj, done) {
+  console.log("deserializing " + obj);
+  done(null, obj);
+});
+
+// Passport Strategy used to login existing users
+passport.use('local-login', new localStrategy(
+  {passReqToCallback : true}, //allows us to pass back the request to the callback
+  function(req, username, password, done) {
+    funct.localAuth(username, password)
+    .then(function (user) {
+      if (user) {
+        console.log("LOGGED IN AS: " + user.username);
+        req.session.success = 'You are successfully logged in ' + user.username + '!';
+        done(null, user);
+      }
       if (!user) {
-        return done(null, false, { message: 'Incorrect username.' });
+        console.log("COULD NOT LOG IN");
+        req.session.error = 'Could not log user in. Please try again.'; //inform user could not log them in
+        done(null, user);
       }
-      if (!user.validPassword(password)) {
-        return done(null, false, { message: 'Incorrect password.' });
+    })
+    .fail(function (err){
+      console.log(err.body);
+    });
+  }
+));
+
+// Passport Strategy used to register and signup new users
+passport.use('local-signup', new localStrategy(
+  {passReqToCallback : true}, //allows us to pass back the request to the callback
+  function(req, username, password, done) {
+    funct.localReg(username, password)
+    .then(function (user) {
+      if (user) {
+        console.log("REGISTERED: " + user.username);
+        req.session.success = 'You are successfully registered and logged in ' + user.username + '!';
+        done(null, user);
       }
-      return done(null, user);
+      if (!user) {
+        console.log("COULD NOT REGISTER");
+        req.session.error = 'That username is already in use, please try a different one.'; //inform user could not log them in
+        done(null, user);
+      }
+    })
+    .fail(function (err){
+      console.log(err.body);
     });
   }
 ));
@@ -91,6 +139,13 @@ app.use(function (req, res, next) {
     next();
 });
 
+// route middleware to ensure user is authenticated.
+/*function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) { return next(); }
+  req.session.error = 'Please sign in!';
+  res.redirect('/login');
+}*/
+
 
 /*
  * GET Routes
@@ -98,7 +153,7 @@ app.use(function (req, res, next) {
 
 // Index Page
 app.get('/', function (req, res, next) {
-    res.render('index');
+    res.render('index', {user: req.user});
 });
 // About Page
 app.get('/about', function (req, res, next) {
@@ -130,6 +185,15 @@ app.get('/login', function (req, res, next) {
         pageTestScript: '/qa/login-tests.js'
     });
 });
+// logs user out, deleting from the session, and returns to homepage
+app.get('/logout', function (req, res) {
+    var name = req.user.username;
+    console.log("LOGGIN OUT " + req.user.username)
+    req.logout();
+    res.redirect('/');
+req.session.notice = "You have successfully been logged out " + name + "!";
+});
+
 
 /*
  * POST Routes
@@ -137,10 +201,18 @@ app.get('/login', function (req, res, next) {
 
 // process login request
 app.post('/login',
-    passport.authenticate('local', {    successRedirect: '/',
-                                        failureRedirect: '/login',
-                                        failureFlash: true })
+    passport.authenticate('local-login', {    
+        successRedirect: '/',
+        failureRedirect: '/login'
+    })
 );
+// process registration request
+app.post('/local-reg', 
+    passport.authenticate('local-signup', {
+        successRedirect: '/',
+        failureRedirect: '/login'
+    })
+); 
 // process contact form submission
 app.post('/contact', function (req, res, next) {
     // create new message instance
