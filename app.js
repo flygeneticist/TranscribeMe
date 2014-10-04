@@ -26,7 +26,7 @@ app.use(bodyParser.json());
 // For gzip compression
 app.use(express.compress());
 
-// authentication package
+// authentication package and strategies
 var passport = require('passport');
 var localStrategy = require('passport-local');
 var twitterStrategy = require('passport-twitter');

@@ -1,9 +1,3 @@
-body {
-    margin:0;
-    padding:0;
-    height:100%;
-}
-
 header {
     width:100%;
     margin: 0px 0px 10px 0px;
@@ -21,6 +15,11 @@ a {
     text-decoration: none;
 }
 
+nav {
+    clear: all;
+    height: 100%;
+}
+
 nav span {
     postion: absolute;
     margin: 10px 10px 10px 10px;
@@ -32,9 +31,4 @@ nav span {
 
 div.inner_content {
     margin: 10px 10px 10px 10px;
-}
-
-nav {
-    clear: all;
-    height: 100%;
 }
