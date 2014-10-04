@@ -26,24 +26,68 @@ app.use(bodyParser.json());
 // For gzip compression
 app.use(express.compress());
 
-// authentication package and strategies
+
+//===============PASSPORT=================
+// pulling in required packages and modules
 var passport = require('passport');
 var localStrategy = require('passport-local');
 var twitterStrategy = require('passport-twitter');
 var goolgeStrategy = require('passport-google');
 var facebookStrategy = require('passport-facebook');
 
-passport.use(new localStrategy(
-  function (username, password, done) {
-    User.findOne({ username: username }, function (err, user) {
-      if (err) { return done(err); }
+// Setup serialization of users to only use part of the object
+passport.serializeUser(function(user, done) {
+  console.log("serializing " + user.username);
+  done(null, user);
+});
+
+passport.deserializeUser(function(obj, done) {
+  console.log("deserializing " + obj);
+  done(null, obj);
+});
+
+// Passport Strategy used to login existing users
+passport.use('local-login', new localStrategy(
+  {passReqToCallback : true}, //allows us to pass back the request to the callback
+  function(req, username, password, done) {
+    funct.localAuth(username, password)
+    .then(function (user) {
+      if (user) {
+        console.log("LOGGED IN AS: " + user.username);
+        req.session.success = 'You are successfully logged in ' + user.username + '!';
+        done(null, user);
+      }
       if (!user) {
-        return done(null, false, { message: 'Incorrect username.' });
+        console.log("COULD NOT LOG IN");
+        req.session.error = 'Could not log user in. Please try again.'; //inform user could not log them in
+        done(null, user);
       }
-      if (!user.validPassword(password)) {
-        return done(null, false, { message: 'Incorrect password.' });
+    })
+    .fail(function (err){
+      console.log(err.body);
+    });
+  }
+));
+
+// Passport Strategy used to register and signup new users
+passport.use('local-signup', new localStrategy(
+  {passReqToCallback : true}, //allows us to pass back the request to the callback
+  function(req, username, password, done) {
+    funct.localReg(username, password)
+    .then(function (user) {
+      if (user) {
+        console.log("REGISTERED: " + user.username);
+        req.session.success = 'You are successfully registered and logged in ' + user.username + '!';
+        done(null, user);
       }
-      return done(null, user);
+      if (!user) {
+        console.log("COULD NOT REGISTER");
+        req.session.error = 'That username is already in use, please try a different one.'; //inform user could not log them in
+        done(null, user);
+      }
+    })
+    .fail(function (err){
+      console.log(err.body);
     });
   }
 ));
@@ -93,6 +137,13 @@ app.use(function (req, res, next) {
     res.locals.showTests = app.get('env') !== 'production' && req.query.test === '1';
     next();
 });
+
+// route middleware to ensure user is authenticated.
+/*function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) { return next(); }
+  req.session.error = 'Please sign in!';
+  res.redirect('/login');
+}*/
 
 
 /*
