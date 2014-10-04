@@ -101,7 +101,7 @@ app.use(function (req, res, next) {
 
 // Index Page
 app.get('/', function (req, res, next) {
-    res.render('index');
+    res.render('index', {user: req.user});
 });
 // About Page
 app.get('/about', function (req, res, next) {
@@ -133,6 +133,15 @@ app.get('/login', function (req, res, next) {
         pageTestScript: '/qa/login-tests.js'
     });
 });
+// logs user out, deleting from the session, and returns to homepage
+app.get('/logout', function (req, res) {
+    var name = req.user.username;
+    console.log("LOGGIN OUT " + req.user.username)
+    req.logout();
+    res.redirect('/');
+req.session.notice = "You have successfully been logged out " + name + "!";
+});
+
 
 /*
  * POST Routes
@@ -140,10 +149,18 @@ app.get('/login', function (req, res, next) {
 
 // process login request
 app.post('/login',
-    passport.authenticate('local', {    successRedirect: '/',
-                                        failureRedirect: '/login',
-                                        failureFlash: true })
+    passport.authenticate('local-login', {    
+        successRedirect: '/',
+        failureRedirect: '/login'
+    })
 );
+// process registration request
+app.post('/local-reg', 
+    passport.authenticate('local-signup', {
+        successRedirect: '/',
+        failureRedirect: '/login'
+    })
+); 
 // process contact form submission
 app.post('/contact', function (req, res, next) {
     // create new message instance
