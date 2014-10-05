@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var userSchema = mongoose.Schema({
-    namefirst: String,
+    nameFirst: String,
     nameLast: String,
     role: Number,
     password: String,
@@ -16,13 +16,5 @@ var userSchema = mongoose.Schema({
     date_updated: Date,
     active: Boolean,
 });
-
-userSchema.methods.getNotes = function(){
-    return this.notes; // select statement for all notes that have use in it
-};
-
-userSchema.methods.getRole = function(){
-    return this.role;
-};
 
 module.exports = mongoose.model('User', userSchema);
