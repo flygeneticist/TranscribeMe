@@ -7,13 +7,15 @@ var express = require('express');
 var app = express();    
 var port = 3000;
 
-// mongodb setup and models imported
-var mongoose = require('mongoose');
-var config = require('./lib/config.js');
+// mongoDB setup
+var mongoose =  require('mongoose');
+var config =    require('./lib/config.js');
 mongoose.connect(config.db);
-var User = require('./models/user.js');
-var Note = require('./models/note.js');
-var Message = require('./models/message.js');
+// models imported
+var User =      require('./models/user.js');
+var Note =      require('./models/note.js');
+var Message =   require('./models/message.js');
+var Event =     require('./models/event.js');
 
 // Using Handlebars for templating
 var exphbs = require('express3-handlebars');
@@ -175,10 +177,20 @@ app.get('/schedule', function (req, res, next) {
 });
 // Notes Page
 app.get('/notes', function (req, res, next) {
-    res.render('notes', {
-        pageTestScript  : '/qa/notes-tests.js',
-        userNotes       : ''
-    });
+    function callback (err, events) {
+        if (err) {
+            return next(err);
+        }
+        res.render('notes', {
+            pageTestScript  : '/qa/notes-tests.js',
+            userEvents      : events,
+            eventCount      : events.length
+        });
+    }
+    
+    Event.find({}).select('date description note').exec(callback);
+
+
 });
 // Login Page
 app.get('/login', function (req, res, next) {
@@ -192,9 +204,67 @@ app.get('/logout', function (req, res) {
     console.log("LOGGIN OUT " + req.user.username)
     req.logout();
     res.redirect('/');
-req.session.notice = "You have successfully been logged out " + name + "!";
+    req.session.notice = "You have successfully been logged out " + name + "!";
 });
+// dev setup of new user and two events upon startup for testing purposes
+app.get('/dbset', function (req, res) {
+    // new user
+    var u1 = new User({
+        nameFirst: "Kevin",
+        nameLast: "Keller",
+        role: 4,
+        password: "Test1234",
+        email: "test@test.com",
+        date_created: Date.now(),
+        date_updated: Date.now(),
+        active: true,
+    });
+    u1.save(function (err, u1) {
+        if (err) { console.error(err); }
+    });
 
+    var u = User.distinct("_id", {"nameFirst": "Kevin"});
+
+    // new event #1
+    var e1 = new Event({
+        type            : 'Course',
+        description     : 'Intro to Biology 101',
+        startDate       : Date.parse('10/14/2014'),
+        startTime       : '12:00 PM',
+        endTime         : '1:00 PM',
+        repeat          : false,
+        repeatOn        : ["M","W","F"],
+        repeatUntil     : Date.parse('12/30/2014'), 
+        attendees       : [],
+        note            : "http://notestore.com/",
+        created_on      : Date.now(),
+        updated_on      : Date.now(),
+    });
+    e1.save(function (err, e1) {
+        if (err) { console.error(err); }
+    });
+    // new event #2
+    var e2 = new Event({
+        type            : 'Course',
+        description     : 'Intro to Biology 101 - Lab',
+        startDate       : Date.parse('10/15/2014'),
+        startTime       : '5:00 PM',
+        endtime         : '9:00 PM',
+        repeat          : true,
+        repeatOn        : ["T"],
+        repeatUntil     : Date.parse('12/30/2014'), 
+        attendees       : [],
+        note            : "http://notestore.com/",
+        created_on      : Date.now(),
+        updated_on      : Date.now(),
+    });
+    e2.save(function (err, e2) {
+        if (err) { console.error(err); }
+    });
+
+    res.send("DATABASE HAS BEEN SUCCESSFULLY SEEDED! :)");
+});
+    
 
 /*
  * POST Routes
