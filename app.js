@@ -179,8 +179,10 @@ app.get('/schedule', function (req, res, next) {
 app.get('/notes', function (req, res, next) {
     res.render('notes', {
         pageTestScript  : '/qa/notes-tests.js',
-        userEvents      : Event.find()
-        });
+        userEvents      : Event.find({}),
+        eventCount      : Event.find({}).count()
+    });
+
 });
 // Login Page
 app.get('/login', function (req, res, next) {
