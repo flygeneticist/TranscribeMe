@@ -187,10 +187,8 @@ app.get('/notes', function (req, res, next) {
             eventCount      : events.length
         });
     }
-    
-    Event.find({}).select('date description note').exec(callback);
 
-
+    Event.find({}).select('startDate description note').exec(callback);
 });
 // Login Page
 app.get('/login', function (req, res, next) {
