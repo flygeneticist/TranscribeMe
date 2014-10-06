@@ -177,11 +177,19 @@ app.get('/schedule', function (req, res, next) {
 });
 // Notes Page
 app.get('/notes', function (req, res, next) {
-    res.render('notes', {
-        pageTestScript  : '/qa/notes-tests.js',
-        userEvents      : Event.find({}),
-        eventCount      : Event.find({}).count()
-    });
+    function callback (err, events) {
+        if (err) {
+            return next(err);
+        }
+        res.render('notes', {
+            pageTestScript  : '/qa/notes-tests.js',
+            userEvents      : events,
+            eventCount      : events.length
+        });
+    }
+    
+    Event.find({}).select('date description note').exec(callback);
+
 
 });
 // Login Page
