@@ -4,7 +4,8 @@
   "dependencies": {
     "jquery": "2.0.3",
     "modernizr": "~2.6.2",
-    "pure": "~0.5.0"
+    "pure": "~0.5.0",
+    "moment": "~2.8.3"
   },
   "devDependencies": {}
 }

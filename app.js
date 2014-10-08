@@ -19,7 +19,9 @@ var Event =     require('./models/event.js');
 
 // Using Handlebars for templating
 var exphbs = require('express3-handlebars');
-var hbs;
+
+// time parseing libaray
+var moment = require('moment');
 
 // setup bodyParser which will this will let us get the data from a POST
 var bodyParser = require('body-parser');
@@ -142,12 +144,11 @@ app.use(function (req, res, next) {
 });
 
 // route middleware to ensure user is authenticated.
-/*function ensureAuthenticated(req, res, next) {
+function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) { return next(); }
   req.session.error = 'Please sign in!';
   res.redirect('/login');
-}*/
-
+}
 
 /*
  * GET Routes
@@ -171,9 +172,17 @@ app.get('/contact', function (req, res, next) {
 }); 
 // Schedule Page
 app.get('/schedule', function (req, res, next) {
-    res.render('schedule', {
-        pageTestScript: '/qa/schedule-tests.js'
-    });
+    function callback (err, events) {
+        if (err) {
+            return next(err);
+        }
+        res.render('schedule', {
+            pageTestScript  : '/qa/schedule-tests.js',
+            userEvents      : events,
+        });
+    }
+
+    Event.find({}).select('startDate description note').exec(callback);
 });
 // Notes Page
 app.get('/notes', function (req, res, next) {
@@ -183,6 +192,7 @@ app.get('/notes', function (req, res, next) {
         }
         res.render('notes', {
             pageTestScript  : '/qa/notes-tests.js',
+            moment          : moment,
             userEvents      : events,
             eventCount      : events.length
         });
@@ -282,6 +292,34 @@ app.post('/local-reg',
         failureRedirect: '/login'
     })
 ); 
+// process event form submission
+app.post('/schedule', function (req, res, next) {
+    // create new message instance
+    var evnt = new Event({
+            type            : req.body.type,
+            description     : req.body.description,
+            startDate       : req.body.startDate,
+            startTime       : req.body.startTime,
+            endtime         : req.body.endTime,
+            repeat          : req.body.repeat,
+            repeatOn        : [],
+            repeatUntil     : req.body.endDate, 
+            attendees       : [],
+            note            : undefined,
+            created_on      : Date.now(),
+            updated_on      : Date.now(),
+            pending         : true,
+        });
+    // save the event and check for errors
+    evnt.save(function(err) {
+        if (err) {
+            res.send(err);
+        }
+        res.json({ evnt: 'Event created!' });
+    });
+    // send the user back to the home page
+    res.redirect('/');
+});
 // process contact form submission
 app.post('/contact', function (req, res, next) {
     // create new message instance

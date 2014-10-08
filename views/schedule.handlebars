@@ -1,9 +1,50 @@
 <h2>Schedule</h2>
-<p>
-    Confirm and schedule transcription appointments here.
-</p>
+<h3>
+    Create An Event
+</h3>
+<form action="/schedule" method="post">
+    <div> 
+        <label>Type</label>
+        <select name='type'>
+            <option value="course">Course</option>
+            <option value="club">Club</option>
+            <option value="other">Other</option>
+        </select>
+    </div>
+    <div> 
+        <label>Description</label>
+        <input name='description' type='text' />
+    </div>
+    <div> 
+        <label>Start Date</label>
+        <input name='startDate' type='date' />
+    </div>
+    <div> 
+        <label>Start Time</label>
+        <input name='startTime' type='time' />
+    </div>
+    <div> 
+        <label>End Time</label>
+        <input name='endTime' type='time' />
+    </div>
+    <div> 
+        <label>Repeat</label>
+        <input name='repeat' type='checkbox' value='repeat' />
+    </div>
+    <div> 
+        <label>Repeat On</label>
+        <input name='repeatOn' type='text' />
+    </div>
+    <div> 
+        <label>Repeat Until</label>
+        <input name='repeatUntil' type='date' />
+    </div>
+    <div>
+        <input name='submit' value='submit' type='submit'/>
+    </div>
+</form>
 
-<h3>Availablity Calander</h3>
+<h3>Scheduled Events Calander</h3>
 <p>
     Calendar should show open blocks that can be scheduled in.
 </p>
