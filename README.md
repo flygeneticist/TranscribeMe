@@ -1,4 +1,6 @@
-## Introduction
+[![Build Status](https://travis-ci.org/flygeneticist/TranscribeMe.svg?branch=master)](https://travis-ci.org/flygeneticist/TranscribeMe)
+
+## Transcribe Me
 
 Transcription services scheduling and notes storage app. 
 
