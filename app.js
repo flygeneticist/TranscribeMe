@@ -75,9 +75,9 @@ app.use(express.compress());
 // pulling in required packages and modules
 var passport = require('passport');
 var localStrategy = require('passport-local');
-// var twitterStrategy = require('passport-twitter');
-// var googleStrategy = require('passport-google');
-// var facebookStrategy = require('passport-facebook');
+var twitterStrategy = require('passport-twitter');
+var googleStrategy = require('passport-google');
+var facebookStrategy = require('passport-facebook');
 
 // Setup serialization of users to only use part of the object
 passport.serializeUser(function(user, done) {
