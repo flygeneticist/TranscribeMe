@@ -20,6 +20,7 @@ var Event =     require('./models/event.js');
 
 // Using Handlebars for templating
 var exphbs = require('express3-handlebars');
+app.set('view engine', 'handlebars');
 
 /*
  * Config for Production and Development
@@ -74,9 +75,9 @@ app.use(express.compress());
 // pulling in required packages and modules
 var passport = require('passport');
 var localStrategy = require('passport-local');
-var twitterStrategy = require('passport-twitter');
-var googleStrategy = require('passport-google');
-var facebookStrategy = require('passport-facebook');
+// var twitterStrategy = require('passport-twitter');
+// var googleStrategy = require('passport-google');
+// var facebookStrategy = require('passport-facebook');
 
 // Setup serialization of users to only use part of the object
 passport.serializeUser(function(user, done) {
@@ -84,6 +85,7 @@ passport.serializeUser(function(user, done) {
   done(null, user);
 });
 
+// Setup deserialization of users
 passport.deserializeUser(function(obj, done) {
   console.log("deserializing " + obj);
   done(null, obj);
@@ -134,10 +136,6 @@ passport.use('local-signup', new localStrategy(
     });
   }
 ));
-
-
-// Set Handlebars
-app.set('view engine', 'handlebars');
 
 
 /*
