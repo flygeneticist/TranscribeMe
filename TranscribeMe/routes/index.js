@@ -70,20 +70,14 @@ router.get('/logout', function (req, res) {
 /*
  * POST Routes
  */
-
+ 
 // process login request
-router.post('/login',
-    passport.authenticate('local-login', {    
-        successRedirect: '/',
-        failureRedirect: '/login'
-    })
-);
-// process registration request
-router.post('/local-reg', 
-    passport.authenticate('local-signup', {
-        successRedirect: '/',
-        failureRedirect: '/login'
-    })
-); 
+router.post('/login', function (req, res) {
+    res.render('index')   
+});
+
+router.post('/local-reg', function (req, res) {
+    res.render('index')   
+});
 
 module.exports = router;
