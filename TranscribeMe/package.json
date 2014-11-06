@@ -1,6 +1,6 @@
 {
   "name": "TranscribeMe",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"
@@ -14,7 +14,14 @@
     "debug": "~2.0.0",
     "jade": "~1.6.0",
     "mongodb": "*",
-    "monk": "*",
-    "handlebars": "*"
+    "monk": "*"
+  },
+  "devDependencies": {
+    "chai": "*",
+    "mocha": "*"
+  },
+  "engines": {
+    "node": "*",
+    "npm": "*"
   }
 }
