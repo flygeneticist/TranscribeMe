@@ -1,13 +1,23 @@
 var express = require('express');
 var router = express.Router();
 
-/*
- * GET Routes
- */
+/* GET Routes */
+
 // Home Page
 router.get('/', function (req, res) {
-  res.render('index', { title: 'TranscribeMe - Home' });
+    res.render('index', { title: 'TranscribeMe - Home' });
 });
+
+// get all users
+router.get('/userlist', function (res, req){
+    var db = req.db;
+    console.log(db);
+    var collection = db.get('users');
+    collection.find({},{},function (e, docs){
+        res.render('users', { 'users': docs });
+    });
+});
+
 // About Page
 router.get('/about', function (req, res) {
     res.render('about', { title: 'TranscribeMe - About' });
@@ -30,17 +40,12 @@ router.get('/login', function (req, res) {
 });
 // logs user out, deleting from the session, and returns to homepage
 router.get('/logout', function (req, res) {
-    // var name = req.user.username;
-    // console.log("LOGGING OUT " + req.user.username)
-    // req.logout();
     res.redirect('/');
-    // req.session.notice = "You have successfully been logged out " + name + "!";
 });
 
 
-/*
- * POST Routes
- */
+/* POST Routes */
+
 // process login request
 router.post('/login', function (req, res) {
     res.render('index')   
