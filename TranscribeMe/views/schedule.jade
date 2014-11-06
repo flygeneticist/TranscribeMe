@@ -1,0 +1,47 @@
+extends layout
+
+block content
+  h2 Schedule
+  h3 Create An Event
+
+  form(action="/schedule" method="post")
+    div 
+      label Type
+      select(name='type')
+        option(value="course"Course")
+        option(value="club"Club")
+        option(value="other"Other")
+    div 
+      label Description
+      input(name='description' type='text')
+    
+    div 
+      label Start Date
+      input(name='startDate' type='date')
+    
+    div 
+      label Start Time
+      input(name='startTime' type='time')
+    
+    div 
+      label End Time
+      input(name='endTime' type='time')
+    
+    div 
+      label Repeat
+      input(name='repeat' type='checkbox' value='repeat')
+    
+    div 
+      labelRepeat On
+      input(name='repeatOn' type='text')
+    
+    div 
+      label Repeat Until
+      input(name='repeatUntil' type='date')
+
+    div
+      input(name='submit' value='submit' type='submit')
+      
+  h3 Scheduled Events Calander
+  p Calendar should show open blocks that can be scheduled in.
+

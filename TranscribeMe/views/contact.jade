@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  h2 Contact Us
+  p. 
+    Want to praise us, found an issue, or anything else really?
+    Use the form below to get in touch!
+
+  form(action="/contact" method="post")
+    input(type="hidden")
+    div
+      label Name:
+      input(type="text" id="fieldName" name="name" required)
+
+    div
+      label Email:
+      input(type="email" name="email" required)
+
+    div
+      textarea(type="text" name="message" rows="10" cols="50" placeholder="Enter your message here..." required)
+
+    div
+      input(type="submit" value="Submit" name="submit")

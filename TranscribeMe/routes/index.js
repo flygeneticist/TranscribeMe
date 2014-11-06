@@ -4,73 +4,43 @@ var router = express.Router();
 /*
  * GET Routes
  */
-
-/* GET home page. */
-router.get('/', function(req, res) {
-  res.render('index', { title: 'Express' });
+// Home Page
+router.get('/', function (req, res) {
+  res.render('index', { title: 'TranscribeMe - Home' });
 });
 // About Page
 router.get('/about', function (req, res) {
-    res.render('about', {
-        pageTestScript: '/qa/about-tests.js'
-    });
+    res.render('about', { title: 'TranscribeMe - About' });
 });
 // Contact Page
 router.get('/contact', function (req, res) {
-    res.render('contact', {
-        pageTestScript: '/qa/contact-tests.js'
-    });
+    res.render('contact', { title: 'TranscribeMe - Contact' });
 }); 
 // Schedule Page
-router.get('/schedule', function (req, res, next) {
-    function callback (err, events) {
-        if (err) {
-            return next(err);
-        }
-        res.render('schedule', {
-            pageTestScript  : '/qa/schedule-tests.js',
-            userEvents      : events,
-        });
-    }
-
-    Event.find({}).select('startDate description note').exec(callback);
+router.get('/schedule', function (req, res) {
+    res.render('schedule', { title: 'TranscribeMe - Schedule'});
 });
 // Notes Page
-router.get('/notes', function (req, res, next) {
-    function callback (err, events) {
-        if (err) {
-            return next(err);
-        }
-        res.render('notes', {
-            pageTestScript  : '/qa/notes-tests.js',
-            moment          : moment,
-            userEvents      : events,
-            eventCount      : events.length
-        });
-    }
-
-    Event.find({}).select('startDate description note').exec(callback);
+router.get('/notes', function (req, res) {
+    res.render('notes', { title: 'TranscribeMe - Notes'});
 });
 // Login Page
-router.get('/login', function (req, res, next) {
-    res.render('login', {
-        pageTestScript: '/qa/login-tests.js'
-    });
+router.get('/login', function (req, res) {
+    res.render('login', { title: 'TranscribeMe - Login'});
 });
 // logs user out, deleting from the session, and returns to homepage
 router.get('/logout', function (req, res) {
-    var name = req.user.username;
-    console.log("LOGGING OUT " + req.user.username)
-    req.logout();
+    // var name = req.user.username;
+    // console.log("LOGGING OUT " + req.user.username)
+    // req.logout();
     res.redirect('/');
-    req.session.notice = "You have successfully been logged out " + name + "!";
+    // req.session.notice = "You have successfully been logged out " + name + "!";
 });
 
 
 /*
  * POST Routes
  */
- 
 // process login request
 router.post('/login', function (req, res) {
     res.render('index')   
