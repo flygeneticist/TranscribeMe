@@ -7,17 +7,6 @@ var router = express.Router();
 router.get('/', function (req, res) {
     res.render('index', { title: 'TranscribeMe - Home' });
 });
-
-// get all users
-router.get('/userlist', function (res, req){
-    var db = req.db;
-    console.log(db);
-    var collection = db.get('users');
-    collection.find({},{},function (e, docs){
-        res.render('users', { 'users': docs });
-    });
-});
-
 // About Page
 router.get('/about', function (req, res) {
     res.render('about', { title: 'TranscribeMe - About' });

@@ -6,9 +6,15 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 // database setup
-var mongo = require('mongodb');
-var monk = require('monk');
-var db = monk('localhost:27017/transcribemetest');
+var mongo = require('mongodb').MongoClient,
+    format = require('util').format;
+
+mongo.connect('mongodb://localhost:27017/transcribemetest', function(err, db) {
+  if(err) throw err;
+  db.collectionNames(function(err, collections){
+      console.log(collections);
+  });
+});
 
 // routes setup
 var routes = require('./routes/index');
