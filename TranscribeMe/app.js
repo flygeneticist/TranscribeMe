@@ -6,15 +6,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 // database setup
-var mongo = require('mongodb').MongoClient,
-    format = require('util').format;
-
-mongo.connect('mongodb://localhost:27017/transcribemetest', function(err, db) {
-  if(err) throw err;
-  db.collectionNames(function(err, collections){
-      console.log(collections);
-  });
-});
+var mongo = require('mongodb');
+var mongoose = require('mongoose');
 
 // routes setup
 var routes = require('./routes/index');
@@ -34,11 +27,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Make db accessible to router
-app.use(function (req, res, next){
-    req.db = db;
-    next();
-});
+// database connection setup
+// app.require('config/database');
 
 app.use('/', routes);
 app.use('/users', users);

@@ -31,6 +31,10 @@ router.get('/login', function (req, res) {
 router.get('/logout', function (req, res) {
     res.redirect('/');
 });
+// test page for database setup
+router.get('/userlist', function (req, res) {
+    res.render('users', { "users": users });
+});
 
 
 /* POST Routes */
